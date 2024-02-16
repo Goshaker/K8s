@@ -18,7 +18,7 @@ jobs:
         echo "ssh keyscan"
         ssh jump_sa@178.124.206.53 -p 32510 ssh-keyscan 192.168.208.7 >> ~/.ssh/known_hosts
         echo "ssh"
-        ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 " ${{ secrets.HOST_USER_K8S_1 }}@${{ secrets.HOST_K8S_1 }} "kubectl get pods -A" >> output.log
+        ssh -o ProxyCommand="ssh -W %h:%p jump_sa@$178.124.206.53 -p 32510 " root@192.168.208.7 "kubectl get pods -A" >> output.log
 
     - name: Check Crash pods
       id: check-pods
