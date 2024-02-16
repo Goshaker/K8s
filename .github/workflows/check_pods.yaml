@@ -11,9 +11,9 @@ jobs:
         mkdir ~/.ssh
         eval `ssh-agent -s`
         ssh-add - <<< "${{ secrets.SSH_KEY }}"
-        ssh-keyscan -p ${{ JUMP_PORT }} ${{ secrets.JUMP_HOST }} >> ~/.ssh/known_hosts
-        ssh ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p ${{ JUMP_PORT }} ssh-keyscan ${{ secrets.HOST_USER_K8S_1 }} >> ~/.ssh/known_hosts
-        ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p ${{ JUMP_PORT }}" ${{ secrets.HOST_USER_K8S_1 }}@${{ secrets.HOST_K8S_1 }} "kubectl get pods -A" >> output.log
+        ssh-keyscan -p 32510 ${{ secrets.JUMP_HOST }} >> ~/.ssh/known_hosts
+        ssh ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 ssh-keyscan ${{ secrets.HOST_USER_K8S_1 }} >> ~/.ssh/known_hosts
+        ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 " ${{ secrets.HOST_USER_K8S_1 }}@${{ secrets.HOST_K8S_1 }} "kubectl get pods -A" >> output.log
 
     - name: Check Crash pods
       id: check-pods
