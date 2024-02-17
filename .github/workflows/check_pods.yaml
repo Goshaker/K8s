@@ -36,17 +36,24 @@ jobs:
         name: Dead pods
         path: output_k8s1.log
 
-    - name: Connect to K8s host
+    - name: Connect to K3s host
       run: |
         eval `ssh-agent -s`
         ssh-add - <<< "${{ secrets.SSH_KEY }}"
         ssh-keyscan -p 32510 ${{ secrets.JUMP_HOST }} >> ~/.ssh/known_hosts
-        ssh ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 ssh-keyscan ${{ secrets.HOST_K8S_2 }} >> ~/.ssh/known_hosts
-        ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510" ${{ secrets.HOST_USER_K8S_2 }}@${{ secrets.HOST_K8S_2 }} "kubectl get pods -A" >> output_k8s2.log
+        ssh ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 ssh-keyscan ${{ secrets.HOST_K3S }} >> ~/.ssh/known_hosts
+        ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510" ${{ secrets.HOST_USER_K3S }}@${{ secrets.HOST_K3S }} "kubectl get pods -A" >> output_k3s.log
 
-    - name: Check Crash pods k8s2
-      id: check-pods-k8s2
+    - name: Check Crash pods k3s
+      id: check-pods-k3s
       run: |
-        echo "$(cat output_k8s2.log)" >> crash_report 2>&1
-        echo "pods-dont-work=$(cat output_k8s2.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
+        echo "$(cat output_k3s.log)" >> crash_report 2>&1
+        echo "pods-dont-work=$(cat output_k3s.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
+
+    - name: Upload Crashed Pods List
+      if: steps.check-pods-k3s.outputs.pods-dont-work != 1
+      uses: actions/upload-artifact@v4
+      with:
+        name: Dead pods
+        path: output_k3s.log
 
