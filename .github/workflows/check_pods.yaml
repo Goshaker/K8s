@@ -14,7 +14,7 @@ jobs:
         ssh-keygen -l -f secret.key.pem
       continue-on-error: true
 
-    - name: Connect to K3s host
+    - name: Connect to K8s host
       run: |
         mkdir ~/.ssh
         echo "OK mkdir ~/.ssh"
@@ -24,8 +24,8 @@ jobs:
         ssh ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510 ssh-keyscan ${{ secrets.HOST_K8S_1 }} >> ~/.ssh/known_hosts
         ssh -o ProxyCommand="ssh -W %h:%p ${{ secrets.JUMP_USERNAME }}@${{ secrets.JUMP_HOST }} -p 32510" ${{ secrets.HOST_USER_K8S_1 }}@${{ secrets.HOST_K8S_1 }} "kubectl get pods -A" >> output.log
 
-        #    - name: Check Crash pods
-        #id: check-pods
-        #run: |
-        #echo "$(cat  output-pods.log | grep -v Running)" >> crash_report 2>&1
-        #echo "pods-dont-work=$(cat output-pods.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
+    - name: Check Crash pods
+      id: check-pods
+      run: |
+        echo "$(cat  output-pods.log | grep -v Running)" >> crash_report 2>&1
+        echo "pods-dont-work=$(cat output-pods.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
