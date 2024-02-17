@@ -27,7 +27,7 @@ jobs:
       id: check-pods-k8s
       run: |
         echo "$(cat output_k8s.log)" >> crash_report 2>&1
-        echo "pods-dont-work=$(cat output_k8s.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
+        echo "pods-dont-work=$(cat output_k8s.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
 
     - name: Upload Crashed Pods List
       if: steps.check-pods-k8s.outputs.pods-dont-work == 1
@@ -48,7 +48,7 @@ jobs:
       id: check-pods-k3s
       run: |
         echo "$(cat output_k3s.log)" >> crash_report 2>&1
-        echo "pods-dont-work=$(cat output_k3s.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
+        echo "pods-dont-work=$(cat output_k3s.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
 
     - name: Upload Crashed Pods List
       if: steps.check-pods-k3s.outputs.pods-dont-work == 1
