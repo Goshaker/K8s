@@ -61,7 +61,7 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       if: steps.check-pods-k8s.outputs.pods-failed != 1
       env:
-        SLACK_CHANNEL: weekendwarrior-group
+        SLACK_CHANNEL: k8s-pods-check
         SLACK_ICON: https://github.com/rtCamp.png?size=48
         SLACK_COLOR: 'red'
         SLACK_USERNAME: rtCamp
