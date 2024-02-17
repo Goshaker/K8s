@@ -6,6 +6,14 @@ jobs:
   check-pods:
     runs-on: ubuntu-latest
     steps:
+    - name: Check SSH_PKEY Secret
+      run: |
+        echo "Secret SSH_PKEY: ${{ secrets.SSH_KEY }}"
+        echo "${{ secrets.SSH_KEY }}" > secret.key.pem
+        chmod 600 secret.key.pem
+        ssh-keygen -l -f secret.key.pem
+      continue-on-error: true
+
     - name: Connect to K3s host
       run: |
         mkdir ~/.ssh
