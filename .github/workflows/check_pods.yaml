@@ -28,4 +28,4 @@ jobs:
       id: check-pods
       run: |
         echo "$(cat  output.log)" >> crash_report 2>&1
-        echo "pods-dont-work=$(cat output.log)" >> $GITHUB_OUTPUT
+        echo "pods-dont-work=$(cat output-pods.log | grep 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
