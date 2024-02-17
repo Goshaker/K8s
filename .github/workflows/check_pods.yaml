@@ -27,5 +27,5 @@ jobs:
     - name: Check Crash pods
       id: check-pods
       run: |
-        echo "$(cat  output-pods.log | grep -v Running)" >> crash_report 2>&1
-        echo "pods-dont-work=$(cat output-pods.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
+        echo "$(cat  output.log | grep -v Running)" >> crash_report 2>&1
+        echo "pods-dont-work=$(cat output.log | grep -v 'Running\|Completed ' | wc -l)" >> $GITHUB_OUTPUT
