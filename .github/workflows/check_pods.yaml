@@ -30,7 +30,7 @@ jobs:
         echo "pods-dont-work=$(cat output_k8s.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
 
     - name: Upload Crashed Pods List
-      if: steps.check-pods-k8s.outputs.pods-dont-work != 1
+      if: steps.check-pods-k8s.outputs.pods-dont-work == 1
       uses: actions/upload-artifact@v4
       with:
         name: Dead pods k8s
@@ -51,7 +51,7 @@ jobs:
         echo "pods-dont-work=$(cat output_k3s.log | grep -v 'Running\|Completed' | wc -l)" >> $GITHUB_OUTPUT
 
     - name: Upload Crashed Pods List
-      if: steps.check-pods-k3s.outputs.pods-dont-work != 1
+      if: steps.check-pods-k3s.outputs.pods-dont-work == 1
       uses: actions/upload-artifact@v4
       with:
         name: Dead pods k3s
@@ -59,7 +59,7 @@ jobs:
 
     - name: Slack notification k8s
       uses: rtCamp/action-slack-notify@v2
-      if: steps.check-pods-k8s.outputs.pods-failed != 1
+      if: steps.check-pods-k8s.outputs.pods-failed == 1
       env:
         SLACK_CHANNEL: k8s-pods-check
         SLACK_ICON: https://github.com/rtCamp.png?size=48
@@ -70,7 +70,7 @@ jobs:
 
     - name: Slack notification k3s
       uses: rtCamp/action-slack-notify@v2
-      if: steps.check-pods-k3s.outputs.pods-failed != 1
+      if: steps.check-pods-k3s.outputs.pods-failed == 1
       env:
         SLACK_CHANNEL: k3s-check-pods
         SLACK_ICON: https://github.com/rtCamp.png?size=48
