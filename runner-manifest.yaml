@@ -19,9 +19,9 @@ spec:
         image: sanderknape/github-runner:latest
         env:
         - name: GITHUB_OWNER
-          value: IPaul32
+          value: Goshaker
         - name: GITHUB_REPOSITORY
-          value: 10.Kubernetes.Installation
+          value: K8s
         - name: GITHUB_PAT
           valueFrom:
             secretKeyRef:
